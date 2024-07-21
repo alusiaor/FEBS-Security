@@ -115,7 +115,7 @@ pipeline {
         }
 
 
-        stage('Get Credentials') {
+        stage('Build Docker Image') {
             steps {
                 // 使用凭据
                 withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -123,12 +123,6 @@ pipeline {
                     echo "Username: ${env.USERNAME}"
                     echo "Password: ${env.PASSWORD}"
                 }
-            }
-        }
-
-
-        stage('Build Docker Image') {
-            steps {
                 script {
                     dir("$APP_DIR/$PROJECT_NAME") {
                         log("开始镜像打包")
