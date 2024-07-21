@@ -24,13 +24,14 @@ pipeline {
         PROJECT_NAME = "${params.PROJECT_NAME}"
         GIT_REPO = "${params.GIT_REPO}" // Git仓库地址
         GIT_BRANCH = "${params.GIT_BRANCH}" // Git分支
+        VERSION=sh('mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout')
     }
 
     stages {
         stage('Prepare Environment') {
             steps {
                 script {
-                    log("开始部署 ") // 日志记录
+                    log("开始部署 $VERSION") // 日志记录
 
                     if (!fileExists(APP_DIR)) {
                         log("目录不存在，创建目录 $APP_DIR")
