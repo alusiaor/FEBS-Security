@@ -103,9 +103,8 @@ pipeline {
                     dir("$APP_DIR/$PROJECT_NAME/febs-web/target") {
                         log("启动")
                         sh "echo `pwd`" // 启动项目
-                        sh "echo $POM_REVISION"
                         exit_on_error("start failed")
-                        log("启动完成")
+                        log("启动完成 ${POM_VERSION} ")
                     }
 
                 }
