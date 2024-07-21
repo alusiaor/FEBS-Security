@@ -119,10 +119,7 @@ pipeline {
             steps {
                 // 使用凭据
                 withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    // 在此步骤中，你可以使用环境变量 USERNAME 和 PASSWORD
-                    echo "Username: ${env.USERNAME}"
-                    echo "Password: ${env.PASSWORD}"
-
+             
                     script {
                         dir("$APP_DIR/$PROJECT_NAME") {
                             log("开始镜像打包")
