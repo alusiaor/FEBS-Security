@@ -65,6 +65,5 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>febs-${febs.version}</finalName>
     </build>
 </project>
