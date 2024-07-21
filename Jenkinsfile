@@ -1,3 +1,4 @@
+def mavenVersion = sh(returnStdout: true, script: 'mvn --version | grep "Apache Maven" | awk \'{print $3}\'').trim()
 pipeline {
     agent any
 
@@ -5,7 +6,7 @@ pipeline {
         string(
                 name: 'GIT_REPO',
                 defaultValue: '',
-                description: 'Git仓库地址' // 输入GitGit仓库地址
+                description: 'Git仓库地址' // 输入Git仓库地址
         )
         string(
                 name: 'GIT_BRANCH',
@@ -30,7 +31,7 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    log("开始部署") // 日志记录
+                    log("开始部署   $mavenVersion") // 日志记录
 
                     if (!fileExists(APP_DIR)) {
                         log("目录不存在，创建目录 $APP_DIR")
@@ -104,7 +105,7 @@ pipeline {
                         log("启动")
                         sh "echo `pwd`" // 启动项目
                         exit_on_error("start failed")
-                        log("启动完成 ${POM_VERSION} ")
+                        log("启动完成  ")
                     }
 
                 }
