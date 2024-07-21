@@ -5,7 +5,7 @@ pipeline {
         string(
                 name: 'GIT_REPO',
                 defaultValue: '',
-                description: 'GitGit仓库地址' // 输入GitGit仓库地址
+                description: 'Git仓库地址' // 输入GitGit仓库地址
         )
         string(
                 name: 'GIT_BRANCH',
