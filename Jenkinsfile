@@ -86,7 +86,7 @@ pipeline {
                         log("模块依赖打包完成")
 
                         // 运行 Maven 命令获取版本号
-                        def version = sh(script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
+                        def version = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
                         echo "Project version: ${version}"
 
                         // 将版本号存储到环境变量
