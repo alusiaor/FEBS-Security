@@ -118,12 +118,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // 使用凭据
-                withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'pwd')]) {
 
                     script {
                         dir("$APP_DIR/$PROJECT_NAME") {
                             log("开始镜像打包")
-                            sh "docker login --username=${env.USERNAME} --password ${env.PASSWORD}  registry.cn-chengdu.aliyuncs.com"
+                            sh "docker login --username=${env.USERNAME} -p ${env.pwd}  registry.cn-chengdu.aliyuncs.com"
                             sh "docker  build -t registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
                             exit_on_error("Build Docker Image failed")
                             log("镜像打包完成  ")
