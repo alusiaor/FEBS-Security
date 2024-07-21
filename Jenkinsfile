@@ -120,11 +120,11 @@ pipeline {
                     dir("$APP_DIR/$PROJECT_NAME") {
                         log("开始镜像打包")
                         sh "docker login --username=bugbreaker --password Mindse2024  registry.cn-chengdu.aliyuncs.com"
-                        sh "docker  build -t registry.cn-chengdu.aliyuncs.com/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
+                        sh "docker  build -t registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
                         exit_on_error("Build Docker Image failed")
                         log("镜像打包完成  ")
                         log("开始镜像上传")
-                        sh "docker push registry.cn-chengdu.aliyuncs.com/${env.APP_NAME}:${env.PROJECT_VERSION}"
+                        sh "docker push registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION}"
                         log("镜像上传完成  ")
                     }
 
