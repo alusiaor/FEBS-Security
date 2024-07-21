@@ -1,4 +1,3 @@
-def mavenVersion = sh(returnStdout: true, script: 'mvn --version | grep "Apache Maven" | awk \'{print $3}\'').trim()
 pipeline {
     agent any
 
