@@ -30,7 +30,7 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
-                    log("开始部署 ") // 日志记录
+                    log("开始部署 $SVN_REVISION") // 日志记录
 
                     if (!fileExists(APP_DIR)) {
                         log("目录不存在，创建目录 $APP_DIR")
