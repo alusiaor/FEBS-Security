@@ -114,12 +114,27 @@ pipeline {
             }
         }
 
+
+            stages {
+                stage('Get Credentials') {
+                    steps {
+                        // 使用凭据
+                        withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            // 在此步骤中，你可以使用环境变量 USERNAME 和 PASSWORD
+                            echo "Username: ${env.USERNAME}"
+                            echo "Password: ${env.PASSWORD}"
+                        }
+                    }
+                }
+            }
+
+
         stage('Build Docker Image') {
             steps {
                 script {
                     dir("$APP_DIR/$PROJECT_NAME") {
                         log("开始镜像打包")
-                        sh "docker login --username=bugbreaker --password Mindse2024  registry.cn-chengdu.aliyuncs.com"
+                        sh "docker login --username=${env.USERNAME} --password ${env.PASSWORD}  registry.cn-chengdu.aliyuncs.com"
                         sh "docker  build -t registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
                         exit_on_error("Build Docker Image failed")
                         log("镜像打包完成  ")
