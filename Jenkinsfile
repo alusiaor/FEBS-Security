@@ -119,7 +119,7 @@ pipeline {
             steps {
                 // 使用凭据
                 withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-             
+
                     script {
                         dir("$APP_DIR/$PROJECT_NAME") {
                             log("开始镜像打包")
