@@ -91,7 +91,7 @@ pipeline {
                         log("模块依赖打包完成")
 
                         // 运行 Maven 命令获取版本号
-                        def version = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
+                        def version = sh(script:'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
                         // 将版本号存储到环境变量
                         env.PROJECT_VERSION = version
                         log("项目版本：${env.PROJECT_VERSION}")
@@ -104,7 +104,7 @@ pipeline {
                         log("打包完成")
 
                         // 运行 Maven 命令获取版本号
-                        def name = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true).trim()
+                        def name = sh(script:'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true).trim()
                         // 将版本号存储到环境变量
                         env.APP_NAME = name
                         log("项目名称：${env.APP_NAME}")
