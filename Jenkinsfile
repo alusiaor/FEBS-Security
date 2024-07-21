@@ -24,14 +24,13 @@ pipeline {
         PROJECT_NAME = "${params.PROJECT_NAME}"
         GIT_REPO = "${params.GIT_REPO}" // Git仓库地址
         GIT_BRANCH = "${params.GIT_BRANCH}" // Git分支
-        VERSION=sh('mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout')
     }
 
     stages {
         stage('Prepare Environment') {
             steps {
                 script {
-                    log("开始部署 $VERSION") // 日志记录
+                    log("开始部署 ") // 日志记录
 
                     if (!fileExists(APP_DIR)) {
                         log("目录不存在，创建目录 $APP_DIR")
@@ -85,6 +84,14 @@ pipeline {
                         sh "mvn clean install" // 使用Maven打包项目
                         exit_on_error("Maven install failed")
                         log("模块依赖打包完成")
+
+                        // 运行 Maven 命令获取版本号
+                        def version = sh(script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
+                        echo "Project version: ${version}"
+
+                        // 将版本号存储到环境变量
+                        env.PROJECT_VERSION = version
+                        log("项目版本：${env.PROJECT_VERSION}")
                     }
 
                     dir("$APP_DIR/$PROJECT_NAME/febs-web") {
