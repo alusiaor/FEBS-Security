@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(
                 name: 'GIT_REPO',
-                defaultValue: '',
+                defaultValue: 'https://github.com/alusiaor/FEBS-Security.git',
                 description: 'Git仓库地址' // 输入Git仓库地址
         )
         string(
@@ -14,7 +14,7 @@ pipeline {
         )
         string(
                 name: 'PROJECT_NAME',
-                defaultValue: '',
+                defaultValue: 'FEBS-Security',
                 description: '项目名称' // 输入项目名称
         )
     }
@@ -95,7 +95,7 @@ pipeline {
                     }
 
                     dir("$APP_DIR/$PROJECT_NAME/febs-web") {
-                        log("开始打包")
+                        log("开始打包，${env.PROJECT_VERSION} ")
                         sh "mvn clean package" // 使用Maven打包项目
                         exit_on_error("Maven build failed")
                         log("打包完成")
