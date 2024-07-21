@@ -114,15 +114,14 @@ pipeline {
             }
         }
 
-        stage('Start Project') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    dir("$APP_DIR/$PROJECT_NAME/$MAIN_DIR/target") {
-                        log("启动")
-                        sh "echo `pwd`" // 启动项目
-                        sh "java -jar ${env.APP_NAME}-${env.PROJECT_VERSION}.jar" // 启动项目
-                        exit_on_error("start failed")
-                        log("启动完成  ")
+                    dir("$APP_DIR/$PROJECT_NAME") {
+                        log("开始镜像打包")
+                        sh "docker buildx  build -t orion/$PROJECT_NAME:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
+                        exit_on_error("Build Docker Image failed")
+                        log("镜像打包完成  ")
                     }
 
                 }
