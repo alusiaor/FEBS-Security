@@ -86,6 +86,7 @@ pipeline {
                 script {
                     dir("$APP_DIR/$PROJECT_NAME") {
                         log("开始打包模块依赖")
+                        sh "rm -rf /root/.m2/repository/cc/mrbird"
                         sh "mvn clean install" // 使用Maven打包项目
                         exit_on_error("Maven install failed")
                         log("模块依赖打包完成")
