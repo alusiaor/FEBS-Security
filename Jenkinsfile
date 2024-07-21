@@ -91,7 +91,7 @@ pipeline {
                         log("模块依赖打包完成")
 
                         // 运行 Maven 命令获取版本号
-                        def version = sh(script:'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).replace("\u001B[0m","").trim()
+                        def version = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).replace("\u001B[0m", "").trim()
                         // 将版本号存储到环境变量
                         env.PROJECT_VERSION = version
                         log("项目版本：${env.PROJECT_VERSION}")
@@ -104,7 +104,7 @@ pipeline {
                         log("打包完成")
 
                         // 运行 Maven 命令获取版本号
-                        def name = sh(script:'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true).replace("\u001B[0m","").trim()
+                        def name = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true).replace("\u001B[0m", "").trim()
                         // 将版本号存储到环境变量
                         env.APP_NAME = name
                         log("项目名称：${env.APP_NAME}")
@@ -115,18 +115,16 @@ pipeline {
         }
 
 
-            stages {
-                stage('Get Credentials') {
-                    steps {
-                        // 使用凭据
-                        withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            // 在此步骤中，你可以使用环境变量 USERNAME 和 PASSWORD
-                            echo "Username: ${env.USERNAME}"
-                            echo "Password: ${env.PASSWORD}"
-                        }
-                    }
+        stage('Get Credentials') {
+            steps {
+                // 使用凭据
+                withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    // 在此步骤中，你可以使用环境变量 USERNAME 和 PASSWORD
+                    echo "Username: ${env.USERNAME}"
+                    echo "Password: ${env.PASSWORD}"
                 }
             }
+        }
 
 
         stage('Build Docker Image') {
