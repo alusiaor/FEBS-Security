@@ -17,6 +17,11 @@ pipeline {
                 defaultValue: 'FEBS-Security',
                 description: '项目名称' // 输入项目名称
         )
+        string(
+                name: 'MAIN_DIR',
+                defaultValue: 'febs-web',
+                description: '项目主程序目录' // 输入项目名称
+        )
     }
 
     environment {
@@ -87,18 +92,22 @@ pipeline {
 
                         // 运行 Maven 命令获取版本号
                         def version = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true).trim()
-                        echo "Project version: ${version}"
-
                         // 将版本号存储到环境变量
                         env.PROJECT_VERSION = version
                         log("项目版本：${env.PROJECT_VERSION}")
                     }
 
-                    dir("$APP_DIR/$PROJECT_NAME/febs-web") {
+                    dir("$APP_DIR/$PROJECT_NAME/$MAIN_DIR") {
                         log("开始打包，${env.PROJECT_VERSION} ")
                         sh "mvn clean package" // 使用Maven打包项目
                         exit_on_error("Maven build failed")
                         log("打包完成")
+
+                        // 运行 Maven 命令获取版本号
+                        def name = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true).trim()
+                        // 将版本号存储到环境变量
+                        env.APP_NAME = name
+                        log("项目名称：${env.APP_NAME}")
                     }
 
                 }
@@ -108,9 +117,10 @@ pipeline {
         stage('Start Project') {
             steps {
                 script {
-                    dir("$APP_DIR/$PROJECT_NAME/febs-web/target") {
+                    dir("$APP_DIR/$PROJECT_NAME/$MAIN_DIR/target") {
                         log("启动")
                         sh "echo `pwd`" // 启动项目
+                        sh "java -jar ${env.APP_NAME}-${env.PROJECT_VERSION}.jar" // 启动项目
                         exit_on_error("start failed")
                         log("启动完成  ")
                     }
