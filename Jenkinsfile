@@ -119,17 +119,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // 使用凭据
-                withCredentials([usernamePassword(credentialsId: 'al', usernameVariable: 'USERNAME', passwordVariable: 'pwd')]) {
+                withCredentials([usernamePassword(credentialsId: 'tworion', usernameVariable: 'USERNAME', passwordVariable: 'pwd')]) {
 
                     script {
                         dir("$APP_DIR/$PROJECT_NAME") {
                             log("开始镜像打包")
-                            sh "docker login --username=${env.USERNAME} -p ${env.pwd}  registry.cn-chengdu.aliyuncs.com"
-                            sh "docker  build -t registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
+                            sh "docker login --username=${env.USERNAME} -p ${env.pwd}  x-ali-u-pms-acr01-registry-vpc.cn-chengdu.cr.aliyuncs.com"
+                            sh "docker  build -t x-ali-u-pms-acr01-registry-vpc.cn-chengdu.cr.aliyuncs.com/orion_test/${env.APP_NAME}:${env.PROJECT_VERSION} --platform=linux/amd64 --build-arg JAR_FILE='./$MAIN_DIR/target/${env.APP_NAME}-${env.PROJECT_VERSION}.jar'  ."
                             exit_on_error("Build Docker Image failed")
                             log("镜像打包完成  ")
                             log("开始镜像上传")
-                            sh "docker push registry.cn-chengdu.aliyuncs.com/bugbreaker/${env.APP_NAME}:${env.PROJECT_VERSION}"
+                            sh "docker push x-ali-u-pms-acr01-registry-vpc.cn-chengdu.cr.aliyuncs.com/orion_test/${env.APP_NAME}:${env.PROJECT_VERSION}"
                             log("镜像上传完成  ")
                         }
 
